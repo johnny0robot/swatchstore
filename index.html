@@ -16,6 +16,7 @@
       color: #ffffff;
       font-family: "Roboto", "Segoe UI", Arial, sans-serif;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
@@ -291,7 +292,7 @@
   </div>
 
   <canvas id="canvas"></canvas>
-  
+
   <script>
     const canvas = document.getElementById("canvas");
     const container = document.getElementById("videoContainer");
@@ -385,7 +386,7 @@
       if (!document.fullscreenElement) {
         container.requestFullscreen().catch(err => console.error(err));
       } else {
-        document.exitFullscreen();
+        document.exitFullscreen().catch(err => console.error(err));
       }
     }
 
@@ -425,9 +426,15 @@
       }
     });
 
-    video.addEventListner("ended", () => {
-      document.exitFullscreen();
-      canvas.requestFullscreen();
+    // Transition to Canvas Fullscreen on Video End
+    video.addEventListener("ended", () => {
+      if (document.fullscreenElement) {
+        document.exitFullscreen().then(() => {
+          canvas.requestFullscreen().catch(err => console.error("Canvas fullscreen failed:", err));
+        }).catch(err => console.error(err));
+      } else {
+        canvas.requestFullscreen().catch(err => console.error("Canvas fullscreen failed:", err));
+      }
     });
   </script>
 </body>
