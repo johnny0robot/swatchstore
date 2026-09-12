@@ -290,7 +290,10 @@
     </div>
   </div>
 
+  <canvas id="canvas"></canvas>
+  
   <script>
+    const canvas = document.getElementById("canvas");
     const container = document.getElementById("videoContainer");
     const video = document.getElementById("video");
     const playBtn = document.getElementById("playBtn");
@@ -420,6 +423,11 @@
       if (!video.paused) {
         container.classList.remove("controls-active");
       }
+    });
+
+    video.addEventListner("ended", () => {
+      document.exitFullscreen();
+      canvas.requestFullscreen();
     });
   </script>
 </body>
