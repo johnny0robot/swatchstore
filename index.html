@@ -240,6 +240,14 @@
 
     .video-container:fullscreen .icon-fullscreen-enter { display: none; }
     .video-container:fullscreen .icon-fullscreen-exit { display: block; }
+
+    .notallowed {
+      background-color: gray;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      pointer: not-allowed
+    }
   </style>
 </head>
 <body>
@@ -290,11 +298,9 @@
       </div>
     </div>
   </div>
-
-  <canvas id="canvas"></canvas>
-
+  <div id="selecter"></div>
   <script>
-    const canvas = document.getElementById("canvas");
+    const selecter = document.getElementById("selecter");
     const container = document.getElementById("videoContainer");
     const video = document.getElementById("video");
     const playBtn = document.getElementById("playBtn");
@@ -426,14 +432,26 @@
       }
     });
 
+    function game() {
+      selecter.innerHTML = `
+        <p>3 Swatches</p>
+        <button onclick="modrenShop()">Modren Shop</button>
+        <button class="notallowed">Dark Modren</button>
+        <button class="notallowed">Costal Shop</button>
+        <button onclick="myShop()">My Shop</button>
+      `;  
+    }
+    
     // Transition to Canvas Fullscreen on Video End
     video.addEventListener("ended", () => {
       if (document.fullscreenElement) {
         document.exitFullscreen().then(() => {
-          canvas.requestFullscreen().catch(err => console.error("Canvas fullscreen failed:", err));
+          selecter.requestFullscreen().catch(err => console.error("Canvas fullscreen failed:", err));
+          game();
         }).catch(err => console.error(err));
       } else {
-        canvas.requestFullscreen().catch(err => console.error("Canvas fullscreen failed:", err));
+        selecter.requestFullscreen().catch(err => console.error("Canvas fullscreen failed:", err));
+        game();
       }
     });
   </script>
